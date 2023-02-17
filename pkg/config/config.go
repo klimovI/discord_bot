@@ -17,7 +17,7 @@ type config struct {
 var Config *config
 
 func init() {
-	viper.SetConfigName("local")
+	viper.SetConfigName("development")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("configs")
 

@@ -2,6 +2,7 @@
 .idea/
 .vscode/
 
-# configs
+# configs and environment
+.env
 configs/*
 !configs/*.example.*
