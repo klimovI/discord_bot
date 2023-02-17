@@ -1,7 +1,7 @@
 package main
 
 import (
-	"discord_bot/pkg/bot"
+	"github.com/klimovI/discord_bot/pkg/bot"
 )
 
 func main() {

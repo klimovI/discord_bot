@@ -1,10 +1,11 @@
 package bot
 
 import (
-	"discord_bot/pkg/config"
 	"log"
 	"os"
 	"os/signal"
+
+	"github.com/klimovI/discord_bot/pkg/config"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -31,7 +32,7 @@ func (b *Bot) Start() {
 	b.createCommands()
 
 	log.Print("Bot Started")
-	log.Print("Press Ctrl+C to exit")
+	log.Print("Press Ctrl+C to stop")
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -53,13 +54,15 @@ func (b *Bot) initSession() {
 }
 
 func (b *Bot) addHandlers() {
-	b.session.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		if i.Type == discordgo.InteractionApplicationCommand {
-			if handler, ok := commandsHandlers[i.ApplicationCommandData().Name]; ok {
-				handler(s, i)
+	b.session.AddHandler(
+		func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			if i.Type == discordgo.InteractionApplicationCommand {
+				if handler, ok := commandsHandlers[i.ApplicationCommandData().Name]; ok {
+					handler(s, i)
+				}
 			}
-		}
-	})
+		},
+	)
 }
 
 func (b *Bot) createCommands() {

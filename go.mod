@@ -1,4 +1,4 @@
-module discord_bot
+module github.com/klimovI/discord_bot
 
 go 1.20
 
