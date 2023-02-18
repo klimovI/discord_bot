@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-	b := new(bot.Bot)
-	b.Start()
+	new(bot.Bot).Start()
 }
