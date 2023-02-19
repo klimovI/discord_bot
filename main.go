@@ -32,7 +32,6 @@ func main() {
 	<-interrupt
 
 	log.Print("Bot stopped")
-	os.Exit(0)
 }
 
 func newBot() *Bot {
@@ -109,9 +108,10 @@ func (bot *Bot) addCommandsHandler() {
 }
 
 func (bot *Bot) cleanup() {
-	bot.closeSession()
 	bot.disconnectVoiceConnections()
+	// TODO uncomment
 	// b.deleteCommands()
+	bot.closeSession()
 }
 
 func (bot *Bot) closeSession() {

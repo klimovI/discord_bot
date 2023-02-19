@@ -17,4 +17,4 @@ type Command struct {
 	Handler func(ctx Context)
 }
 
-var Commands = []Command{emojiCommand, helloCommand, joinCommand, testCommand}
+var Commands = []Command{emojiCommand, helloCommand, joinCommand, leaveCommand, testCommand}
