@@ -9,6 +9,7 @@ import (
 
 	"github.com/klimovI/discord_bot/pkg/commands"
 	"github.com/klimovI/discord_bot/pkg/config"
+	"github.com/klimovI/discord_bot/pkg/logger"
 )
 
 type Bot struct {
@@ -24,14 +25,14 @@ func main() {
 
 	bot.addCommands()
 
-	log.Println("Bot started")
-	log.Println("Press Ctrl+C to stop")
+	logger.Info("Bot started")
+	logger.Info("Press Ctrl+C to stop")
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	<-interrupt
 
-	log.Print("Bot stopped")
+	logger.Info("Bot stopped")
 }
 
 func newBot() *Bot {
@@ -97,10 +98,13 @@ func (bot *Bot) addCommandsHandler() {
 
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println(err)
+					logger.Error(err)
 					ctx.RespondWithError()
 				}
 			}()
+
+			zero := 0
+			print(1 / zero)
 
 			handler(ctx)
 		},
@@ -116,7 +120,7 @@ func (bot *Bot) cleanup() {
 
 func (bot *Bot) closeSession() {
 	if err := bot.session.Close(); err != nil {
-		log.Printf("Error closing session: %v\n", err)
+		logger.Errorf("Error closing session: %v\n", err)
 	}
 }
 
@@ -124,7 +128,7 @@ func (bot *Bot) disconnectVoiceConnections() {
 	for _, voiceConnection := range bot.session.VoiceConnections {
 		if err := voiceConnection.Disconnect(); err != nil {
 			guildID := voiceConnection.GuildID
-			log.Printf("Error disconnecting voice connection GuildID = '%v': %v\n", guildID, err)
+			logger.Errorf("Error disconnecting voice connection GuildID = '%v': %v\n", guildID, err)
 		}
 	}
 }
@@ -136,7 +140,7 @@ func (bot *Bot) deleteCommands() {
 		err := bot.session.ApplicationCommandDelete(appID, "", command.ID)
 
 		if err != nil {
-			log.Printf("Error deleting '%v' command: %v\n", command.Name, err)
+			logger.Errorf("Error deleting '%v' command: %v\n", command.Name, err)
 		}
 	}
 }
