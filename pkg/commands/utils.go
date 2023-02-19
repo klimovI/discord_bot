@@ -51,6 +51,10 @@ func (ctx *Context) UserID() string {
 	return ctx.Interaction.Member.User.ID
 }
 
+func (ctx *Context) CommandName() string {
+	return ctx.Interaction.ApplicationCommandData().Name
+}
+
 func (ctx *Context) joinVoiceChannel(guildID string, channelID string) (*discordgo.VoiceConnection, error) {
 	voiceConnection, err := ctx.Session.ChannelVoiceJoin(guildID, channelID, false, true)
 

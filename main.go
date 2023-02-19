@@ -24,8 +24,8 @@ func main() {
 
 	bot.addCommands()
 
-	log.Print("Bot started")
-	log.Print("Press Ctrl+C to stop")
+	log.Println("Bot started")
+	log.Println("Press Ctrl+C to stop")
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -82,13 +82,13 @@ func (bot *Bot) addCommandsHandler() {
 				return
 			}
 
-			name := interaction.ApplicationCommandData().Name
-			handler, ok := bot.commandsHandlers[name]
-
 			ctx := commands.Context{
 				Session:     session,
 				Interaction: interaction.Interaction,
 			}
+
+			commandName := ctx.CommandName()
+			handler, ok := bot.commandsHandlers[commandName]
 
 			if !ok {
 				ctx.Respond("Command no found")
@@ -116,7 +116,7 @@ func (bot *Bot) cleanup() {
 
 func (bot *Bot) closeSession() {
 	if err := bot.session.Close(); err != nil {
-		log.Printf("Error closing session: %v", err)
+		log.Printf("Error closing session: %v\n", err)
 	}
 }
 
@@ -124,7 +124,7 @@ func (bot *Bot) disconnectVoiceConnections() {
 	for _, voiceConnection := range bot.session.VoiceConnections {
 		if err := voiceConnection.Disconnect(); err != nil {
 			guildID := voiceConnection.GuildID
-			log.Printf("Error disconnecting voice connection GuildID = '%v': %v", guildID, err)
+			log.Printf("Error disconnecting voice connection GuildID = '%v': %v\n", guildID, err)
 		}
 	}
 }
@@ -136,7 +136,7 @@ func (bot *Bot) deleteCommands() {
 		err := bot.session.ApplicationCommandDelete(appID, "", command.ID)
 
 		if err != nil {
-			log.Printf("Error deleting '%v' command: %v", command.Name, err)
+			log.Printf("Error deleting '%v' command: %v\n", command.Name, err)
 		}
 	}
 }
