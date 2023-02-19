@@ -1,6 +1,8 @@
 package commands
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
 
 type Context struct {
 	Session     *discordgo.Session
@@ -15,4 +17,4 @@ type Command struct {
 	Handler func(ctx Context)
 }
 
-var Commands = []Command{testCommand}
+var Commands = []Command{emojiCommand, helloCommand, joinCommand, testCommand}
